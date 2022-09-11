@@ -23,9 +23,10 @@ def sync(filename:str = None):
         current_year_data = []
         if year != current_year:
             md1 = modules.webscraper.load_matchday(year, 1)
-            current_year_data.append(md1)
+            current_year_data.extend(md1)
             matchdays = (len(md1) * 4) - 1 # should be -2, but range needs +1
             for matchday in range(2, matchdays):
-                current_year_data.append(modules.webscraper.load_matchday(year, matchday))
+                mdx = modules.webscraper.load_matchday(year, matchday)
+                current_year_data.extend(mdx)
             new_csv_data.extend(current_year_data)
     modules.database_loader.write_database(new_csv_data, filename)

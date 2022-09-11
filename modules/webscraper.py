@@ -66,15 +66,14 @@ def load_matchday(year:int, mday:int):
             cols = [ele.text.strip() for ele in cols]
             data.append(cols)
         modules.database_loader.write_database(data, f"wfb/bundesliga_{year}_{mday}.csv", False)
-    else:
-        data = modules.database_loader.load_database(f"wfb/bundesliga_{year}_{mday}.csv", False)
+    data = modules.database_loader.load_database(f"wfb/bundesliga_{year}_{mday}.csv", False)
     # load the data
     th_ta_gh_ga_y_md = []
     for game in data:
         team_h = game[2]
         team_a = game[4]
         result_tmp = game[5].split(' ')[0]
-        result_h = result_tmp.split(':')[0]
-        result_a = result_tmp.split(':')[1]
+        result_h = int(result_tmp.split(':')[0])
+        result_a = int(result_tmp.split(':')[1])
         th_ta_gh_ga_y_md.append([team_h, team_a, result_h, result_a, year, mday])
     return th_ta_gh_ga_y_md
