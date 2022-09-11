@@ -42,7 +42,7 @@ def load_matchday(year:int, mday:int):
     loads the requested matchday on worldfootball.net
     """
     # get the data
-    if not os.path.exists(f"database/wfb/bundesliga_{year}_{mday}.csv"):
+    if not os.path.exists(f"database/wfb/bundesliga_{year}_{mday}_res.csv"):
         print("Scraping", year, mday)
         time.sleep(0.2)
         soup = None
@@ -59,14 +59,22 @@ def load_matchday(year:int, mday:int):
         if soup is None:
             raise RuntimeError("could not load X")
         data = []
-        table = soup.find('table', attrs={'class':'standard_tabelle'})
-        rows = table.find_all('tr')
+        tables = soup.find_all('table', attrs={'class':'standard_tabelle'})
+        # spieltag ergebnisse
+        rows = tables[0].find_all('tr')
         for row in rows:
             cols = row.find_all('td')
             cols = [ele.text.strip() for ele in cols]
             data.append(cols)
-        modules.database_loader.write_database(data, f"wfb/bundesliga_{year}_{mday}.csv", False)
-    data = modules.database_loader.load_database(f"wfb/bundesliga_{year}_{mday}.csv", False)
+        modules.database_loader.write_database(data, f"wfb/bundesliga_{year}_{mday}_res.csv", False)
+        # spieltag tabelle
+        rows = tables[1].find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            data.append(cols)
+        modules.database_loader.write_database(data, f"wfb/bundesliga_{year}_{mday}_tab.csv", False)
+    data = modules.database_loader.load_database(f"wfb/bundesliga_{year}_{mday}_res.csv", False)
     # load the data
     th_ta_gh_ga_y_md = []
     for game in data:
