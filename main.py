@@ -8,6 +8,7 @@ main file to execute in football-prediction
 ## local imports
 # modules
 import modules.webscraper
+import modules.data_explorer
 # tests
 import testing.webscraper
 
@@ -17,6 +18,7 @@ TESTING = True
 ## code
 if TESTING:
     # testing.webscraper.example_matchday()
-    pass
+    e = modules.data_explorer.Explorer()
+    print(e.get_unique_teams())
 else:
     pass
