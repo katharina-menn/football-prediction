@@ -8,6 +8,7 @@ main file to execute in football-prediction
 ## local imports
 # modules
 import modules.webscraper
+import modules.database_sync
 # tests
 import testing.webscraper
 
@@ -17,6 +18,6 @@ TESTING = True
 ## code
 if TESTING:
     # testing.webscraper.example_matchday()
-    pass
+    modules.database_sync.sync()
 else:
     pass
